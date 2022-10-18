@@ -1,0 +1,12 @@
+{
+    "name": "Linkedin Bookmark for connections",
+    "version": "0.1.0",
+    "description": "Sending Connection request in Linkedin",
+    "permissions": ["tabs", "scripting"],
+    "host_permissions": ["https://*.linkedin.com/*"],
+    "manifest_version": 3,
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "icon.png"
+    }
+}
