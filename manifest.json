@@ -2,7 +2,7 @@
   "name": "Linkedin Bookmark for connections",
   "version": "0.1.0",
   "description": "Sending Connection request in Linkedin",
-  "permissions": ["tabs", "scripting"],
+  "permissions": ["storage","tabs", "scripting"],
   "host_permissions": ["https://*.linkedin.com/search/results/people/*"],
   "manifest_version": 3,
   "background": {
