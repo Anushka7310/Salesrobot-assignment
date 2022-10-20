@@ -16,6 +16,15 @@ document.getElementById("connectionButton").addEventListener("click", () => {
     if(message.type === "connectRequestSentCountMessage"){
       document.getElementById("invitationSent").innerText = "Invitation Sent: "+message.value
     }
+    //code for progress bar value 
+    var ppc = document.querySelector(".progress-pie-chart"),
+        percent = parseInt(ppc.data("percent")),
+        deg = (360 * percent) / 100;
+      if (percent > 50) {
+        ppc.classList.add("gt-50");
+      }
+      document.querySelector(".ppc-progress-fill").css("transform", "rotate(" + deg + "deg)");
+      document.querySelector(".ppc-percents span").html(percent + "%");
   })
 });
 
