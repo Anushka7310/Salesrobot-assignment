@@ -1,6 +1,6 @@
 function sendConnectionRequest() {
-  let count = 1;
-  chrome.storage.sync.set({flag: true})
+  let count = 0;
+  chrome.storage.sync.set({ flag: true });
   // selecting all buttons from the current page with id starting with "ember"
   let allButtons = document.querySelectorAll('*[id^="ember"]');
 
@@ -15,11 +15,6 @@ function sendConnectionRequest() {
     }
   });
 
-  chrome.runtime.sendMessage({
-    type: "totalConnectButtonMessage",
-    value: connectButtons.length
-  })
-
   let time = 0;
   connectButtons.forEach((button) => {
     time = time + 5000;
@@ -33,12 +28,13 @@ function sendConnectionRequest() {
     //clicking of next button after predefined time gap
     setTimeout(() => {
       chrome.storage.sync.get(["flag"], function (result) {
-        if(result.flag){
+        if (result.flag) {
           button.click();
+          count++;
           chrome.runtime.sendMessage({
-            type: "connectRequestSentCountMessage",
-            value: count++
-          })
+            count,
+            percent: (count / connectButtons.length) * 100,
+          });
           //clicking of send button after sending connect request if exists
           setTimeout(() => {
             let newAllButtons = document.querySelectorAll('*[id^="ember"]');
@@ -51,11 +47,9 @@ function sendConnectionRequest() {
             sendButton.forEach((btn) => btn.click());
           }, 500);
         }
-      })
-  
+      });
     }, time);
   });
 }
 
 sendConnectionRequest();
-

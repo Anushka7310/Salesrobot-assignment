@@ -1,4 +1,6 @@
 document.getElementById("connectionButton").addEventListener("click", () => {
+  document.getElementById("connectionButton").classList.add("hidden");
+  document.getElementById("stopButton").classList.remove("hidden");
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.scripting.executeScript({
       target: { tabId: tabs[0].id, allFrames: false },
@@ -6,29 +8,23 @@ document.getElementById("connectionButton").addEventListener("click", () => {
     });
   });
 
-
-
   chrome.runtime.onMessage.addListener((message) => {
-    if(message.type === "totalConnectButtonMessage"){
-      document.getElementById("totalConnectButtons").innerText = "Total: "+message.value
+    //code for progress bar value
+    var ppc = document.querySelector(".progress-pie-chart");
+    percent = message.percent;
+    deg = (360 * percent) / 100;
+    if (percent > 50) {
+      ppc.classList.add("gt-50");
     }
-
-    if(message.type === "connectRequestSentCountMessage"){
-      document.getElementById("invitationSent").innerText = "Invitation Sent: "+message.value
-    }
-    //code for progress bar value 
-    var ppc = document.querySelector(".progress-pie-chart"),
-        percent = parseInt(ppc.data("percent")),
-        deg = (360 * percent) / 100;
-      if (percent > 50) {
-        ppc.classList.add("gt-50");
-      }
-      document.querySelector(".ppc-progress-fill").css("transform", "rotate(" + deg + "deg)");
-      document.querySelector(".ppc-percents span").html(percent + "%");
-  })
+    document.querySelector(".ppc-progress-fill").style.transform =
+      "rotate(" + deg + "deg)";
+    document.querySelector(".ppc-percents span").innerHTML = message.count;
+  });
 });
 
 document.getElementById("stopButton").addEventListener("click", () => {
+  document.getElementById("connectionButton").classList.remove("hidden");
+  document.getElementById("stopButton").classList.add("hidden");
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.scripting.executeScript({
       target: { tabId: tabs[0].id, allFrames: false },
